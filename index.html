@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#142e29">
+  <meta name="description" content="日本語を見て英単語を入力する、英検3級レベルのスペル練習。">
+  <title>SPELL QUEST | 英検3級スペル練習</title>
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./words.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">✦</span> SPELL QUEST</div>
+      <span class="course">英検3級レベル</span>
+    </div>
+  </header>
+  <main class="layout">
+    <aside class="sidebar" aria-label="学習モードと記録">
+      <div class="intro">
+        <p class="eyebrow">SPELLING PRACTICE</p>
+        <h1>スペルクエスト</h1>
+        <p>日本語をヒントに、英単語を入力しよう。</p>
+      </div>
+      <div class="mode-picker" role="group" aria-label="学習モード">
+        <button id="daily" type="button" aria-pressed="false">今日の5問</button>
+        <button id="practice" type="button" aria-pressed="true">通常練習</button>
+        <button id="review" type="button" aria-pressed="false">苦手復習 <span id="review-count">0</span></button>
+      </div>
+      <section class="stats" aria-label="学習記録">
+        <div class="xp-line"><span id="level">レベル 1</span><strong id="xp">0 XP</strong></div>
+        <progress id="level-progress" max="50" value="0" aria-label="次のレベルまでの経験値"></progress>
+        <div class="stats-line"><span>習得単語</span><strong id="mastered"></strong></div>
+        <div class="stats-line"><span>累計正答率</span><strong id="accuracy">—</strong></div>
+        <div class="stats-line">
+          <span id="tiles-progress-label">並べ替えで正解</span>
+          <strong id="tiles-count"></strong>
+        </div>
+        <progress id="tiles-progress" value="0" aria-labelledby="tiles-progress-label"></progress>
+
+        <div class="stats-line">
+          <span id="typing-progress-label">スペル入力で正解</span>
+          <strong id="typing-count"></strong>
+        </div>
+        <progress id="typing-progress" value="0" aria-labelledby="typing-progress-label"></progress>
+      </section>
+      <p id="storage-note" class="storage-note">学習記録はこのブラウザに保存されます。</p>
+    </aside>
+    <section class="stage" aria-label="スペルクイズ">
+      <article class="card" id="quiz">
+        <div id="confetti" class="confetti-layer" aria-hidden="true"></div>
+        <div class="card-top"><span id="mode-label">通常練習</span><span id="position"></span></div>
+        <progress id="round-progress" max="10" value="0" aria-label="セットの進み具合"></progress>
+        <div class="prompt">
+          <p id="category" class="eyebrow"></p>
+          <h2 id="meaning" tabindex="-1"></h2>
+          <p id="clue"></p>
+        </div>
+        <form id="answer-form" novalidate>
+          <div class="spelling-mode">
+            <label for="spelling-style">答え方</label>
+            <select id="spelling-style">
+              <option value="tiles">文字を並べ替える</option>
+              <option value="typing">キーボード入力</option>
+            </select>
+          </div>
+
+          <div id="tile-panel">
+            <p>文字を正しい順にタップしよう。</p>
+            <p id="tile-answer" class="tile-answer" role="status">まだ選んでいません</p>
+            <div id="letter-bank" class="letter-bank" role="group" aria-label="選べる文字"></div>
+            <button id="undo-letter" class="text-button" type="button" disabled>
+              最後の文字を戻す
+            </button>
+          </div>
+
+          <div id="typing-panel" hidden>
+            <label for="answer">英語のスペル</label>
+            <input id="answer" name="answer" type="text" lang="en" autocomplete="off" autocorrect="off"
+              autocapitalize="none" spellcheck="false" maxlength="40" placeholder="ここに入力"
+              aria-describedby="answer-error hint-text">
+          </div>
+          <div class="assist">
+            <button id="hint" class="text-button" type="button">ヒントを見る</button>
+            <button id="skip" class="text-button" type="button">わからない</button>
+          </div>
+          <p id="hint-text" class="hint" role="status"></p>
+          <p id="answer-error" class="hint error" role="status"></p>
+          <div id="feedback" class="feedback" hidden>
+            <div role="status">
+              <p id="result"></p>
+              <p id="earned-xp" class="earned-xp" hidden></p>
+            </div>
+            <button id="listen" class="text-button" type="button">発音を聞く</button>
+            <p id="audio-status" role="status"></p>
+          </div>
+          <button id="submit" class="primary" type="submit">答え合わせ</button>
+          <button id="next" class="primary" type="button" hidden>次の問題</button>
+        </form>
+      </article>
+      <article id="summary" class="card summary" hidden>
+        <p class="eyebrow" id="summary-label"></p>
+        <h2 id="summary-title" tabindex="-1"></h2>
+        <p id="summary-detail"></p>
+        <div id="missed-block" hidden>
+          <h3>今回の苦手単語</h3>
+          <ul id="missed-list"></ul>
+        </div>
+        <button id="again" class="primary" type="button"></button>
+        <button id="review-now" class="text-button" type="button" hidden>苦手単語を復習する</button>
+      </article>
+    </section>
+  </main>
+  <noscript>練習を始めるには、ブラウザでJavaScriptを有効にしてください。</noscript>
+</body>
+
+</html>
